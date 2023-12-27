@@ -15,7 +15,7 @@ const CoinViewer = ({ symbol, coin, shadow, theme }: CoinViewerProps) => {
     useEffect(() => {
         const fetchCoinImage = async () => {
             try {
-                const coinId = coin ?? 'ethereum'
+                const coinId = coin ?? 'bitcoin'
                 const response = await axios.get(`https://api.coingecko.com/api/v3/coins/${coinId}`);
                 setCoinInfo(prevState => ({
                     ...prevState,
@@ -32,7 +32,7 @@ const CoinViewer = ({ symbol, coin, shadow, theme }: CoinViewerProps) => {
 
         fetchCoinImage();
 
-        const ws = new WebSocket(`wss://stream.binance.com:9443/ws/${symbol ?? 'ethusdt'}@ticker`);
+        const ws = new WebSocket(`wss://stream.binance.com:9443/ws/${symbol ?? 'btcusdt'}@ticker`);
 
         ws.onmessage = (event) => {
             const data = JSON.parse(event.data);
@@ -46,13 +46,13 @@ const CoinViewer = ({ symbol, coin, shadow, theme }: CoinViewerProps) => {
         return () => {
             ws.close();
         };
-    }, [symbol ?? 'ethusdt']);
+    }, [symbol ?? 'btcusdt']);
 
     return (
         <div className={`coin-viewer ${theme ?? 'light'}`}>
             <div>
                 {
-                    coinInfo.image === '' ? (
+                    coinInfo.image === '' || coinInfo.image === 'undefined' ? (
                         <div className="coin-image-loader"></div>
                     ) : (
                         <img src={coinInfo.image} alt={`${coin} logo`} className='coin-image' />
