@@ -1,6 +1,5 @@
 export interface CoinViewerProps {
     coin?: string,
-    color?: string,
     shadow?: string,
     symbol?: string,
     theme?: 'dark' | 'light' | undefined
@@ -14,6 +13,6 @@ export interface CoinViewerState {
 
 export interface CoinViewerStory {
     title: string;
-    component: ({ coin, color, shadow }: CoinViewerProps) => React.JSX.Element;
+    component: ({ coin, symbol, theme, shadow }: CoinViewerProps) => React.JSX.Element;
     tags: string[];
 }

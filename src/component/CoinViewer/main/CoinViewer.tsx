@@ -5,7 +5,7 @@ import { CoinViewerProps, CoinViewerState } from '../types/types';
 import '@fontsource/quicksand'
 import '@fontsource-variable/quicksand';
 
-const CoinViewer = ({ symbol, coin, color, shadow, theme }: CoinViewerProps) => {
+const CoinViewer = ({ symbol, coin, shadow, theme }: CoinViewerProps) => {
     const [coinInfo, setCoinInfo] = useState<CoinViewerState>({
         price: '',
         percentage: '',
@@ -49,7 +49,7 @@ const CoinViewer = ({ symbol, coin, color, shadow, theme }: CoinViewerProps) => 
     }, [symbol ?? 'ethusdt']);
 
     return (
-        <div className={`coin-viewer ${theme ?? 'light'}`} style={{ color: color, boxShadow: shadow }}>
+        <div className={`coin-viewer ${theme ?? 'light'}`}>
             <div>
                 {
                     coinInfo.image === '' ? (
