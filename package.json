@@ -1,6 +1,6 @@
 {
   "name": "react-coin-viewer",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "react coin viewer",
   "scripts": {
     "rollup": "rollup -c --bundleConfigAsCjs",
@@ -9,6 +9,7 @@
     "build-storybook": "storybook build"
   },
   "author": "Recep",
+  "keywords": ["react coin viewer","crypto","coins","react chip","badge","coin viewer"],
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.23.6",
