@@ -2,49 +2,78 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import '../css/CoinViewer.css';
 import { CoinViewerProps, CoinViewerState } from '../types/types';
+import '@fontsource/quicksand'
+import '@fontsource-variable/quicksand';
 
-const CoinViewer = ({ coin, color, shadow }: CoinViewerProps) => {
+const CoinViewer = ({ symbol, coin, color, shadow, theme }: CoinViewerProps) => {
     const [coinInfo, setCoinInfo] = useState<CoinViewerState>({
         price: '',
         percentage: '',
         image: ''
     });
 
-    const getCoinData = async (coinId: string) => {
-        try {
-            const response = await axios.get(`https://api.coingecko.com/api/v3/coins/${coinId}`);
-            const coinData = response.data;
-
-            return {
-                price: `$${coinData.market_data.current_price.usd.toFixed(2)}`,
-                percentage: `${coinData.market_data.price_change_percentage_24h.toFixed(2)}%`,
-                image: coinData.image.large
-            };
-        } catch (error) {
-            console.error("Hata:", error);
-            return null;
-        }
-    };
-
-    const coinFetchFunc = async () => {
-        const coinData = await getCoinData(coin ?? 'bitcoin');
-        if (coinData) {
-            setCoinInfo(coinData);
-        }
-    };
-
     useEffect(() => {
-        coinFetchFunc();
-        const interval = setInterval(coinFetchFunc, 10000);
-        return () => clearInterval(interval);
-    }, [coin]); 
+        const fetchCoinImage = async () => {
+            try {
+                const coinId = coin ?? 'ethereum'
+                const response = await axios.get(`https://api.coingecko.com/api/v3/coins/${coinId}`);
+                setCoinInfo(prevState => ({
+                    ...prevState,
+                    image: response.data.image.large
+                }));
+            } catch (error) {
+                console.error("Resim çekme hatası:", error);
+                setCoinInfo(prevState => ({
+                    ...prevState,
+                    image: 'undefined'
+                }));
+            }
+        };
+
+        fetchCoinImage();
+
+        const ws = new WebSocket(`wss://stream.binance.com:9443/ws/${symbol ?? 'ethusdt'}@ticker`);
+
+        ws.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            setCoinInfo(prevState => ({
+                ...prevState,
+                price: `$${parseFloat(data.c).toFixed(2)}`,
+                percentage: `${parseFloat(data.P).toFixed(2)}%`
+            }));
+        };
+
+        return () => {
+            ws.close();
+        };
+    }, [symbol ?? 'ethusdt']);
 
     return (
-        <div className='coin-viewer' style={{ color: color, boxShadow: shadow }}>
-            <img src={coinInfo.image} alt={`${coin} logo`} style={{ width: '40px', height: '50px' }} />
+        <div className={`coin-viewer ${theme ?? 'light'}`} style={{ color: color, boxShadow: shadow }}>
             <div>
-                <p>Price: {coinInfo.price}</p>
-                <p>24h Change: {coinInfo.percentage}</p>
+                {
+                    coinInfo.image === '' ? (
+                        <div className="coin-image-loader"></div>
+                    ) : (
+                        <img src={coinInfo.image} alt={`${coin} logo`} className='coin-image' />
+                    )
+                }
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+                {
+                    coinInfo.price === '' ? (
+                        <div className="coin-price-loader"></div>
+                    ) : (
+                        <span className='coin-price'>{coinInfo.price}</span>
+                    )
+                }
+                {
+                    coinInfo.percentage === '' ? (
+                        <div className="coin-percentage-loader"></div>
+                    ) : (
+                        <span className={`coin-percentage coin-percentage-${parseInt(coinInfo.percentage.replace('%', '')) > 0 ? 'increase' : 'decrease'}`}>{coinInfo.percentage}</span>
+                    )
+                }
             </div>
         </div>
     );

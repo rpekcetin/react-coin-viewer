@@ -1,7 +1,9 @@
 export interface CoinViewerProps {
     coin?: string,
     color?: string,
-    shadow?: string
+    shadow?: string,
+    symbol?: string,
+    theme?: 'dark' | 'light' | undefined
 }
 
 export interface CoinViewerState {
