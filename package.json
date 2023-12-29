@@ -1,6 +1,6 @@
 {
   "name": "react-coin-viewer",
-  "version": "0.0.12",
+  "version": "1.0.0",
   "description": "react coin viewer",
   "scripts": {
     "rollup": "rollup -c --bundleConfigAsCjs",
