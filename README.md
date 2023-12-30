@@ -4,15 +4,15 @@ You can add cryptocurrency information to your site with the react coin viewer c
 
 Code;
 
-<img src="https://project-storage-phi.vercel.app/coin-viewer-code.png" alt="Image code"/>
+![Alt text for the image](https://rpekcetin.github.io/coin-viewer-code.png)
 
 Light Theme;
 
-<img src="https://project-storage-phi.vercel.app/light-coin-viewer.png" alt="Image light"/>
+![Alt text for the image](https://rpekcetin.github.io/light-coin-viewer.png)
 
 Dark Theme;
 
-<img src="https://project-storage-phi.vercel.app/dark-coin-viewer.png" alt="Image dark"/>
+![Alt text for the image](https://rpekcetin.github.io/dark-coin-viewer.png)
 
 Props;
 
